@@ -74,6 +74,10 @@ function _createInput(className, textarea){
 	var input = textarea ? document.createElement("textarea") : document.createElement("input");
 	input.setAttribute("class",className);
 	input.addEventListener("keydown",function(event){
+		// Allow Ctrl+Z, Ctrl+Y, Ctrl+Shift+Z to propagate for undo/redo
+		if ((event.ctrlKey || event.metaKey) && (event.key === 'z' || event.key === 'y')) {
+			return; // let it propagate
+		}
 		event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);
 	},false); // STOP IT FROM TRIGGERING KEY.js
 	return input;
@@ -90,6 +94,10 @@ function _createNumberInput(onUpdate){
 	self.dom.style.padding = "5px";
 
 	self.dom.addEventListener("keydown",function(event){
+		// Allow Ctrl+Z, Ctrl+Y, Ctrl+Shift+Z to propagate for undo/redo
+		if ((event.ctrlKey || event.metaKey) && (event.key === 'z' || event.key === 'y')) {
+			return; // let it propagate
+		}
 		event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);
 	},false); // STOP IT FROM TRIGGERING KEY.js
 
