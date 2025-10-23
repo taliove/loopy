@@ -66,7 +66,7 @@ function Sidebar(loopy){
 			}
 		}));
 		page.addComponent("radius", new ComponentSlider({
-			bg: "initial",
+			bg: "size",
 			label: "节点大小:",
 			options: [30, 45, 60, 75, 90, 105, 120],
 			oninput: function(value){
