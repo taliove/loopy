@@ -13,11 +13,41 @@ function HistoryPanel(loopy){
 	self.dom = document.createElement("div");
 	self.dom.id = "history_panel";
 
-	// 创建标题
+	// 创建标题栏（包含标题和折叠按钮）
 	var header = document.createElement("div");
 	header.className = "history_header";
-	header.innerHTML = "历史记录";
+	
+	// 标题文字
+	var headerTitle = document.createElement("span");
+	headerTitle.className = "history_header_title";
+	headerTitle.innerHTML = "历史记录";
+	header.appendChild(headerTitle);
+	
+	// 折叠按钮
+	var collapseBtn = document.createElement("span");
+	collapseBtn.className = "history_collapse_btn";
+	collapseBtn.innerHTML = "▼";
+	collapseBtn.title = "折叠/展开";
+	header.appendChild(collapseBtn);
+	
 	self.dom.appendChild(header);
+
+	// 面板是否折叠
+	self.isCollapsed = false;
+
+	// 折叠/展开切换
+	collapseBtn.onclick = function(){
+		self.isCollapsed = !self.isCollapsed;
+		if(self.isCollapsed){
+			self.listContainer.style.display = "none";
+			collapseBtn.innerHTML = "▲";
+			self.dom.style.maxHeight = "40px";
+		}else{
+			self.listContainer.style.display = "block";
+			collapseBtn.innerHTML = "▼";
+			self.dom.style.maxHeight = "400px";
+		}
+	};
 
 	// 创建列表容器
 	self.listContainer = document.createElement("div");
@@ -94,9 +124,10 @@ function HistoryPanel(loopy){
 				itemDiv.className += " history_future";
 			}
 			
-			// 构建 HTML 内容
+			// 构建 HTML 内容（添加序号）
 			var timeStr = loopy.history.formatTimestamp(snapshot.timestamp);
-			var actionHTML = '<div class="history_item_action">' + snapshot.action + '</div>';
+			var indexHTML = '<span class="history_item_index">' + i + '</span>';
+			var actionHTML = '<div class="history_item_action">' + indexHTML + ' ' + snapshot.action + '</div>';
 			var timeHTML = '<div class="history_item_time">' + timeStr + '</div>';
 			itemDiv.innerHTML = actionHTML + timeHTML;
 			
