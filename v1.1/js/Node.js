@@ -15,6 +15,7 @@ Node.COLORS = {
 
 Node.defaultValue = 0.5;
 Node.defaultHue = 0;
+Node.defaultShape = "circle"; // circle or rectangle
 
 Node.DEFAULT_RADIUS = 60;
 
@@ -36,7 +37,8 @@ function Node(model, config){
 		init: Node.defaultValue, // initial value!
 		label: "?",
 		hue: Node.defaultHue,
-		radius: Node.DEFAULT_RADIUS
+		radius: Node.DEFAULT_RADIUS,
+		shape: Node.defaultShape
 	});
 
 	// Value: from 0 to 1
@@ -190,20 +192,35 @@ function Node(model, config){
 		
 		// DRAW HIGHLIGHT???
 		if(self.loopy.sidebar.currentPage.target == self){
-			ctx.beginPath();
-			ctx.arc(0, 0, r+40, 0, Math.TAU, false);
-			ctx.fillStyle = HIGHLIGHT_COLOR;
-			ctx.fill();
+			if(self.shape === "rectangle"){
+				ctx.fillStyle = HIGHLIGHT_COLOR;
+				ctx.fillRect(-r-20, -r-20, (r+20)*2, (r+20)*2);
+			}else{
+				ctx.beginPath();
+				ctx.arc(0, 0, r+40, 0, Math.TAU, false);
+				ctx.fillStyle = HIGHLIGHT_COLOR;
+				ctx.fill();
+			}
 		}
 		
-		// White-gray bubble with colored border
-		ctx.beginPath();
-		ctx.arc(0, 0, r-2, 0, Math.TAU, false);
-		ctx.fillStyle = "#fff";
-		ctx.fill();
-		ctx.lineWidth = 6;
-		ctx.strokeStyle = color;
-		ctx.stroke();
+		// White-gray bubble/rectangle with colored border
+		if(self.shape === "rectangle"){
+			// Rectangle
+			ctx.fillStyle = "#fff";
+			ctx.fillRect(-r+3, -r+3, (r-3)*2, (r-3)*2);
+			ctx.lineWidth = 6;
+			ctx.strokeStyle = color;
+			ctx.strokeRect(-r+3, -r+3, (r-3)*2, (r-3)*2);
+		}else{
+			// Circle
+			ctx.beginPath();
+			ctx.arc(0, 0, r-2, 0, Math.TAU, false);
+			ctx.fillStyle = "#fff";
+			ctx.fill();
+			ctx.lineWidth = 6;
+			ctx.strokeStyle = color;
+			ctx.stroke();
+		}
 		
 		// Circle radius
 		// var _circleRadiusGoto = r*(self.value+1);
@@ -231,13 +248,18 @@ function Node(model, config){
 			}
 		}
 
-		// Colored bubble
-		ctx.beginPath();
+		// Colored bubble/rectangle
 		var _circleRadiusGoto = r*_value; // radius
 		_circleRadius = _circleRadius*0.8 + _circleRadiusGoto*0.2;
-		ctx.arc(0, 0, _circleRadius, 0, Math.TAU, false);
-		ctx.fillStyle = color;
-		ctx.fill();
+		if(self.shape === "rectangle"){
+			ctx.fillStyle = color;
+			ctx.fillRect(-_circleRadius, -_circleRadius, _circleRadius*2, _circleRadius*2);
+		}else{
+			ctx.beginPath();
+			ctx.arc(0, 0, _circleRadius, 0, Math.TAU, false);
+			ctx.fillStyle = color;
+			ctx.fill();
+		}
 
 		// Text!
 		var fontsize = 40;
@@ -312,7 +334,11 @@ function Node(model, config){
 
 	self.isPointInNode = function(x, y, buffer){
 		buffer = buffer || 0;
-		return _isPointInCircle(x, y, self.x, self.y, self.radius+buffer);
+		if(self.shape === "rectangle"){
+			return _isPointInRectangle(x, y, self.x, self.y, self.radius+buffer);
+		}else{
+			return _isPointInCircle(x, y, self.x, self.y, self.radius+buffer);
+		}
 	};
 
 	self.getBoundingBox = function(){

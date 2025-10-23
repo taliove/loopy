@@ -40,6 +40,14 @@ function Sidebar(loopy){
 			label: "<br><br>Name:"
 			//label: "Name:"
 		}));
+		page.addComponent("shape", new ComponentSlider({
+			bg: "shape",
+			label: "Shape:",
+			options: ["circle", "rectangle"],
+			oninput: function(value){
+				Node.defaultShape = value;
+			}
+		}));
 		page.addComponent("hue", new ComponentSlider({
 			bg: "color",
 			label: "Color:",
@@ -343,6 +351,12 @@ function ComponentSlider(config){
 	slider.draggable = false;
 	slider.src = "css/sliders/"+config.bg+".png";
 	slider.setAttribute("class","component_slider_graphic");
+	// If image fails to load (e.g., shape.png doesn't exist), use a gray background
+	slider.onerror = function(){
+		slider.style.background = "#ddd";
+		slider.style.width = "250px";
+		slider.style.height = "50px";
+	};
 	var pointer = new Image();
 	pointer.draggable = false;
 	pointer.src = "css/sliders/slider_pointer.png";

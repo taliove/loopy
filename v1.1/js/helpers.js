@@ -255,6 +255,19 @@ function _isPointInCircle(x, y, cx, cy, radius){
 
 }
 
+function _isPointInRectangle(x, y, cx, cy, radius){
+	
+	// Rectangle bounds (centered at cx, cy with size radius*2)
+	var left = cx - radius;
+	var right = cx + radius;
+	var top = cy - radius;
+	var bottom = cy + radius;
+
+	// Inside?
+	return x >= left && x <= right && y >= top && y <= bottom;
+
+}
+
 function _isPointInBox(x, y, box){
 
 	if(x<box.x) return false;

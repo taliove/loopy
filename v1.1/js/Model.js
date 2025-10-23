@@ -264,14 +264,20 @@ function Model(loopy){
 			// 3 - init value
 			// 4 - label
 			// 5 - hue
-			nodes.push([
+			// 6 - shape (optional, defaults to 'circle')
+			var nodeData = [
 				node.id,
 				Math.round(node.x),
 				Math.round(node.y),
 				node.init,
 				encodeURIComponent(encodeURIComponent(node.label)),
 				node.hue
-			]);
+			];
+			// Only add shape if it's not the default 'circle'
+			if(node.shape && node.shape !== 'circle'){
+				nodeData.push(node.shape);
+			}
+			nodes.push(nodeData);
 		}
 		data.push(nodes);
 
@@ -338,14 +344,19 @@ function Model(loopy){
 		// Nodes
 		for(var i=0;i<nodes.length;i++){
 			var node = nodes[i];
-			self.addNode({
+			var nodeConfig = {
 				id: node[0],
 				x: node[1],
 				y: node[2],
 				init: node[3],
 				label: decodeURIComponent(node[4]),
 				hue: node[5]
-			});
+			};
+			// Add shape if it exists (index 6)
+			if(node[6]){
+				nodeConfig.shape = node[6];
+			}
+			self.addNode(nodeConfig);
 		}
 
 		// Edges
