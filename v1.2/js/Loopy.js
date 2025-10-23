@@ -167,6 +167,37 @@ function Loopy(config){
 		input.click();
 	});
 
+	subscribe("export/image", function(){
+		// Get the main canvas
+		var canvasses = document.getElementById("canvasses");
+		var canvas = canvasses.querySelector("canvas");
+		if(!canvas) return;
+
+		// Create a 2x resolution canvas for high quality export
+		var width = canvas.width * 2;
+		var height = canvas.height * 2;
+		var exportCanvas = document.createElement("canvas");
+		exportCanvas.width = width;
+		exportCanvas.height = height;
+
+		// Get context and draw the source canvas at 2x scale
+		var ctx = exportCanvas.getContext("2d");
+		ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, width, height);
+
+		// Convert to PNG and download
+		exportCanvas.toBlob(function(blob){
+			var url = URL.createObjectURL(blob);
+			var element = document.createElement('a');
+			element.setAttribute('href', url);
+			element.setAttribute('download', "loopy_model.png");
+			element.style.display = 'none';
+			document.body.appendChild(element);
+			element.click();
+			document.body.removeChild(element);
+			URL.revokeObjectURL(url);
+		});
+	});
+
 	self.saveToURL = function(embed){
 
 		// Create link

@@ -241,6 +241,33 @@ function Modal(loopy){
 
 	})();
 
+	// Image
+	(function(){
+		var page = new Page();
+		page.width = 500;
+		page.height = 155;
+		page.addComponent(new ComponentHTML({
+			html: "点击下方按钮以2倍分辨率（高清）导出您的系统模型为PNG图片。"
+		}));
+		page.addComponent(new ComponentButton({
+			label: "导出为PNG图片",
+			onclick: function(){
+				publish("export/image");
+				self.hide();
+			}
+		}));
+
+		var label = document.createElement("div");
+		label.style.textAlign = "center";
+		label.style.fontSize = "13px";
+		label.style.marginTop = "10px";
+		label.style.color = "#888";
+		label.innerHTML = "(导出时会保存高清2倍分辨率的图片)";
+		page.dom.appendChild(label);
+
+		self.addPage("save_image", page);
+	})();
+
 	// GIF
 	(function(){
 		var page = new Page();

@@ -190,7 +190,7 @@ function Sidebar(loopy){
 		page.addComponent(new ComponentHTML({
 			html: ""+
 			
-			"<b style='font-size:1.4em'>LOOPY</b> (v1.1)<br>系统思维工具<br><br>"+
+			"<b style='font-size:1.4em'>LOOPY</b> (v1.2)<br>系统思维工具<br><br>"+
 
 			"<span class='mini_button' onclick='publish(\"modal\",[\"examples\"])'>查看示例</span> "+
 			"<span class='mini_button' onclick='publish(\"modal\",[\"howto\"])'>使用教程</span> "+
@@ -199,6 +199,7 @@ function Sidebar(loopy){
 			"<hr/><br>"+
 
 			"<span class='mini_button' onclick='publish(\"modal\",[\"save_link\"])'>保存为链接</span> <br><br>"+
+			"<span class='mini_button' onclick='publish(\"export/image\")'>保存为图片</span> <br><br>"+
 			"<span class='mini_button' onclick='publish(\"export/file\")'>保存为文件</span> "+
 			"<span class='mini_button' onclick='publish(\"import/file\")'>从文件加载</span> <br><br>"+
 			"<span class='mini_button' onclick='publish(\"modal\",[\"embed\"])'>嵌入到您的网站</span> <br><br>"+
