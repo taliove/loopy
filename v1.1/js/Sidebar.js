@@ -116,8 +116,10 @@ function Sidebar(loopy){
 				Edge.defaultStrength = value;
 			}
 		}));
-		page.addComponent("isDelayed", new ComponentToggle({
+		page.addComponent("isDelayed", new ComponentSlider({
+			bg: "delay",
 			label: "<br><br>延迟关系:",
+			options: [false, true],
 			oninput: function(value){
 				// oninput callback if needed
 			}
