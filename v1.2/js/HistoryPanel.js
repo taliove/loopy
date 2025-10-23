@@ -78,6 +78,12 @@ function HistoryPanel(loopy){
 		
 		// 倒序显示（最新的在上面），但初始状态始终置顶
 		var orderedSnapshots = [];
+		
+		// 先添加置顶的首个快照拷贝
+		if(snapshots.length > 0){
+			orderedSnapshots.push({snapshot: snapshots[0], originalIndex: 0, isPinned: true});
+		}
+		
 		var initialIndex = -1;
 		
 		// 找到初始状态
@@ -109,6 +115,11 @@ function HistoryPanel(loopy){
 			var itemDiv = document.createElement("div");
 			itemDiv.className = "history_item";
 			
+			// 置顶样式
+			if(item.isPinned){
+				itemDiv.className += " history_pinned";
+			}
+			
 			// 初始状态特殊样式
 			if(snapshot.isInitial){
 				itemDiv.className += " history_initial";
@@ -126,8 +137,8 @@ function HistoryPanel(loopy){
 			
 			// 构建 HTML 内容（添加序号）
 			var timeStr = loopy.history.formatTimestamp(snapshot.timestamp);
-			var indexHTML = '<span class="history_item_index">' + i + '</span>';
-			var actionHTML = '<div class="history_item_action">' + indexHTML + ' ' + snapshot.action + '</div>';
+			var indexHTML = '<span class="history_item_index">' + (item.isPinned ? '*' : i) + '</span>';
+			var actionHTML = '<div class="history_item_action">' + indexHTML + ' ' + (item.isPinned ? '初始 - ' : '') + snapshot.action + '</div>';
 			var timeHTML = '<div class="history_item_time">' + timeStr + '</div>';
 			itemDiv.innerHTML = actionHTML + timeHTML;
 			

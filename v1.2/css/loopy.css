@@ -217,9 +217,7 @@ div[big=yes] .play_button_label{
 	overflow-y: auto;
 	overflow-x: hidden;
 }
-#sidebar > div > div{
-	margin-bottom: 20px;
-}
+
 #sidebar[mode=play]{
 	background: #222;
 	color: #777;

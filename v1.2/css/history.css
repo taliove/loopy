@@ -221,6 +221,52 @@ HISTORY PANEL - 历史记录面板样式
 	color: #7b4397;
 }
 
+/* 置顶样式 */
+.history_pinned{
+	background: #fff3cd !important;
+	border-left: 3px solid #ffc107 !important;
+	border-top: 2px solid #ffc107;
+	border-bottom: 2px solid #ffc107;
+	margin-top: 5px !important;
+	margin-bottom: 10px !important;
+	position: relative;
+}
+
+.history_pinned::before{
+	content: "📌";
+	position: absolute;
+	right: 8px;
+	top: 8px;
+	font-size: 14px;
+}
+
+.history_pinned:hover{
+	background: #ffeaa7 !important;
+}
+
+.history_pinned.history_current{
+	background: #ffc107 !important;
+	color: #000 !important;
+}
+
+.history_pinned.history_current .history_item_time{
+	color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.history_pinned.history_current .history_item_index{
+	background: rgba(0, 0, 0, 0.3) !important;
+	color: #000 !important;
+}
+
+.history_pinned.history_current:hover{
+	background: #e6a800 !important;
+}
+
+.history_pinned .history_item_index{
+	background: rgba(255, 193, 7, 0.3);
+	color: #856404;
+}
+
 .history_empty{
 	padding: 20px;
 	text-align: center;
@@ -320,6 +366,32 @@ HISTORY PANEL - 历史记录面板样式
 #sidebar[mode=play] .history_initial .history_item_index{
 	background: rgba(123, 67, 151, 0.3);
 	color: #9b7eb8;
+}
+
+/* Play mode 置顶样式 */
+#sidebar[mode=play] .history_pinned{
+	background: #4a3a1a !important;
+	border-left: 3px solid #856404 !important;
+	border-top: 2px solid #856404;
+	border-bottom: 2px solid #856404;
+}
+
+#sidebar[mode=play] .history_pinned:hover{
+	background: #5a4a2a !important;
+}
+
+#sidebar[mode=play] .history_pinned.history_current{
+	background: #856404 !important;
+	color: #ddd !important;
+}
+
+#sidebar[mode=play] .history_pinned.history_current:hover{
+	background: #6a5204 !important;
+}
+
+#sidebar[mode=play] .history_pinned .history_item_index{
+	background: rgba(133, 100, 4, 0.3);
+	color: #b8a76a;
 }
 
 #sidebar[mode=play] .history_empty{
