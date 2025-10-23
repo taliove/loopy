@@ -589,6 +589,13 @@ function Model(loopy){
 
 		// If the tool LOOP? If so, TRY TO CREATE LOOP.
 		if(self.loopy.tool==Loopy.TOOL_LOOP){
+			// Check if there's already a selected loop
+			var currentTarget = loopy.sidebar.currentPage.target;
+			if(currentTarget && currentTarget._CLASS_ === "Loop"){
+				// Deselect by showing the main Edit page
+				loopy.sidebar.showPage("Edit");
+				return;
+			}
 			loopy.looper.tryMakingLoop();
 			return;
 		}
