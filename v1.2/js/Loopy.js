@@ -41,6 +41,12 @@ function Loopy(config){
 	self.sidebar = new Sidebar(self);
 	self.sidebar.showPage("Edit"); // start here
 
+	// History Manager
+	self.history = new History(self);
+
+	// History Panel
+	self.historyPanel = new HistoryPanel(self);
+
 	// Play/Edit mode
 	self.mode = Loopy.MODE_EDIT;
 

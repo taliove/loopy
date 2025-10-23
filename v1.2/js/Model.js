@@ -35,7 +35,7 @@ function Model(loopy){
 	self.addNode = function(config){
 
 		// Model's been changed!
-		publish("model/changed");
+		publish("model/changed", ["add_node"]);
 
 		// Add Node
 		var node = new Node(self,config);
@@ -50,7 +50,7 @@ function Model(loopy){
 	self.removeNode = function(node){
 
 		// Model's been changed!
-		publish("model/changed");
+		publish("model/changed", ["remove_node"]);
 
 		// Remove from array
 		self.nodes.splice(self.nodes.indexOf(node),1);
@@ -81,7 +81,7 @@ function Model(loopy){
 	self.addEdge = function(config){
 
 		// Model's been changed!
-		publish("model/changed");
+		publish("model/changed", ["add_edge"]);
 
 		// Add Edge
 		var edge = new Edge(self,config);
@@ -94,7 +94,7 @@ function Model(loopy){
 	self.removeEdge = function(edge){
 
 		// Model's been changed!
-		publish("model/changed");
+		publish("model/changed", ["remove_edge"]);
 
 		// Remove edge
 		self.edges.splice(self.edges.indexOf(edge),1);
@@ -122,7 +122,7 @@ function Model(loopy){
 	self.addLabel = function(config){
 
 		// Model's been changed!
-		publish("model/changed");
+		publish("model/changed", ["add_label"]);
 
 		// Add label
 		var label = new Label(self,config);
@@ -135,7 +135,7 @@ function Model(loopy){
 	self.removeLabel = function(label){
 
 		// Model's been changed!
-		publish("model/changed");
+		publish("model/changed", ["remove_label"]);
 
 		// Remove label
 		self.labels.splice(self.labels.indexOf(label),1);
@@ -155,7 +155,7 @@ function Model(loopy){
 	self.addLoop = function(config){
 
 		// Model's been changed!
-		publish("model/changed");
+		publish("model/changed", ["add_loop"]);
 
 		// Add loop
 		var loop = new Loop(self,config);
@@ -168,7 +168,7 @@ function Model(loopy){
 	self.removeLoop = function(loop){
 
 		// Model's been changed!
-		publish("model/changed");
+		publish("model/changed", ["remove_loop"]);
 
 		// Remove loop
 		self.loops.splice(self.loops.indexOf(loop),1);
@@ -501,6 +501,9 @@ function Model(loopy){
 		while(self.loops.length>0){
 			self.loops[0].kill();
 		}
+
+		// Model's been changed!
+		publish("model/changed", ["clear"]);
 	};
 
 

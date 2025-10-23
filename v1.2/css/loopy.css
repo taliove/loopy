@@ -207,9 +207,15 @@ div[big=yes] .play_button_label{
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+
+	display: flex;
+	flex-direction: column;
 }
-#sidebar > div{
+#sidebar > div:not(#history_panel){
 	margin: 25px;
+	flex: 1;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 #sidebar > div > div{
 	margin-bottom: 20px;

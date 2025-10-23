@@ -9,7 +9,12 @@
 		
 		17: "control",
 		91: "control", // macs
+		93: "command", // right command key on mac
+		224: "command", // command key firefox
 		13: "enter", // enter
+		16: "shift", // shift
+		90: "z", // Z key
+		89: "y", // Y key
 
 		// TODO: Standardize the NAMING across files?!?!
 		78: "ink", // Pe(n)cil
@@ -27,6 +32,27 @@
 		if(window.loopy && loopy.modal && loopy.modal.isShowing) return;
 		var code = KEY_CODES[event.keyCode];
 	    Key[code] = true;
+	    
+	    // Handle Undo (Ctrl+Z / Cmd+Z)
+	    if(code === "z" && (Key.control || Key.command)){
+	    	if(Key.shift){
+	    		publish("key/redo"); // Ctrl+Shift+Z / Cmd+Shift+Z
+	    	}else{
+	    		publish("key/undo"); // Ctrl+Z / Cmd+Z
+	    	}
+	    	event.stopPropagation();
+	    	event.preventDefault();
+	    	return;
+	    }
+	    
+	    // Handle Redo (Ctrl+Y / Cmd+Y)
+	    if(code === "y" && (Key.control || Key.command)){
+	    	publish("key/redo");
+	    	event.stopPropagation();
+	    	event.preventDefault();
+	    	return;
+	    }
+	    
 	    publish("key/"+code);
 	    event.stopPropagation();
 	    event.preventDefault();
