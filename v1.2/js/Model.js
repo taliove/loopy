@@ -384,13 +384,15 @@ function Model(loopy){
 			// 3 - text
 			// 4 - loopType
 			// 5 - radius
+			// 6 - hue
 			loops.push([
 				loop.id,
 				Math.round(loop.x),
 				Math.round(loop.y),
 				encodeURIComponent(encodeURIComponent(loop.text)),
 				loop.loopType,
-				loop.radius
+				loop.radius,
+				loop.hue
 			]);
 		}
 		data.push(loops);
@@ -476,7 +478,8 @@ function Model(loopy){
 				y: loop[2],
 				text: decodeURIComponent(loop[3]),
 				loopType: loop[4],
-				radius: loop[5]
+				radius: loop[5],
+				hue: loop[6] !== undefined ? loop[6] : 0 // 默认为0（红色）
 			});
 		}
 

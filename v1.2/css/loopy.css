@@ -34,6 +34,9 @@ canvas{
 #canvasses[cursor=label]{
 	cursor: url('cursors/label.png') 15 15, auto;
 }
+#canvasses[cursor=loop]{
+	cursor: url('cursors/label.png') 15 15, auto;
+}
 
 
 
@@ -131,6 +134,52 @@ div[big=yes] .play_button_label{
 .toolbar_button[selected=yes]{
 	border: 2px solid #888;
 	background-color: #999;
+}
+
+/**********
+ LOOP MENU
+**********/
+
+.loop_menu{
+	position: absolute;
+	left: 70px;
+	top: 180px;
+	background: #fff;
+	border: 2px solid #666;
+	padding: 10px;
+	z-index: 100;
+	border-radius: 4px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.loop_menu_button{
+	cursor: pointer;
+	padding: 10px;
+	margin: 5px;
+	text-align: center;
+	font-weight: bold;
+	border-radius: 3px;
+	transition: all 0.2s;
+}
+
+.loop_menu_button.reinforcing{
+	background: #FFE0E0;
+	border: 2px solid #EA3E3E;
+	color: #EA3E3E;
+}
+
+.loop_menu_button.reinforcing:hover{
+	background: #FFB0B0;
+}
+
+.loop_menu_button.balancing{
+	background: #E0F0FF;
+	border: 2px solid #7FD4FF;
+	color: #7FD4FF;
+}
+
+.loop_menu_button.balancing:hover{
+	background: #B0E0FF;
 }
 
 /**********

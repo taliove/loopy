@@ -202,6 +202,30 @@ function Sidebar(loopy){
 		page.addComponent(new ComponentHTML({
 			html: "<br>(增强环路用 R1, R2...<br>调节环路用 B1, B2...)<br><br>"
 		}));
+		page.addComponent("hue", new ComponentSlider({
+			bg: "color",
+			label: "颜色:",
+			options: [0,1],
+			oninput: function(value){
+				Loop.defaultHue = value;
+			}
+		}));
+		page.addComponent("radius", new ComponentSlider({
+			bg: "size",
+			label: "大小:",
+			options: [16, 24, 32, 48, 64, 80, 96],
+			oninput: function(value){
+				Loop.defaultSize = value;
+			}
+		}));
+		page.onedit = function(){
+
+			// Set color of Slider
+			var loop = page.target;
+			var color = Loop.COLORS[loop.hue];
+			page.getComponent("radius").setBGColor(color);
+
+		};
 		page.onshow = function(){
 			// Focus on the text field
 			page.getComponent("text").select();

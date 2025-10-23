@@ -6,6 +6,15 @@ LOOP!
 **********************************/
 
 Loop.defaultType = "reinforcing"; // reinforcing or balancing
+Loop.defaultSize = 24; // 默认大小 - 第二小的等级（7个等级中）
+Loop.defaultHue = 0; // 默认颜色（对应reinforcing的红色）
+Loop.arrowRotation = 3; // 箭头旋转度数（逆时针，度数制）
+
+// 颜色定义
+Loop.COLORS = {
+	0: "#EA3E3E", // red - reinforcing
+	1: "#7FD4FF"  // blue - balancing
+};
 
 function Loop(model, config){
 
@@ -24,8 +33,18 @@ function Loop(model, config){
 		y: 0,
 		text: "R1", // 默认文本
 		loopType: Loop.defaultType, // reinforcing or balancing
-		radius: 80 // 圆的半径
+		radius: Loop.defaultSize, // 圆的半径
+		hue: Loop.defaultHue // 颜色
 	});
+
+	// 确保hue与loopType一致（如果没有明确指定）
+	if(config && !config.hue){
+		if(self.loopType === "reinforcing"){
+			self.hue = 0;
+		}else{
+			self.hue = 1;
+		}
+	}
 
 	//////////////////////////////////////
 	// UPDATE & DRAW /////////////////////
@@ -56,47 +75,46 @@ function Loop(model, config){
 			ctx.fill();
 		}
 
-		// Draw the 90% circle (270 degrees) with arrow at the end
-		var startAngle = Math.TAU * 0.125; // 开始角度 (45度)
+		// 设置颜色 - 使用hue属性
+		var color = Loop.COLORS[self.hue];
+
+		// Draw 90% arc with arrow (circular indicator)
+		var startAngle = 90; // 开始角度 (45度)
 		var endAngle = startAngle + Math.TAU * 0.9; // 结束角度 (覆盖90%的圆，即324度)
 
-		// 设置颜色 - 增强环路用红色，调节环路用蓝色
-		var strokeColor = (self.loopType === "reinforcing") ? "#EA3E3E" : "#7FD4FF";
-		
 		ctx.beginPath();
 		ctx.arc(0, 0, r, startAngle, endAngle, false);
-		ctx.lineWidth = 6;
-		ctx.strokeStyle = strokeColor;
+		ctx.lineWidth = 8;
+		ctx.strokeStyle = color;
 		ctx.stroke();
 
-		// Draw arrow at the end
-		var arrowX = Math.cos(endAngle) * r;
-		var arrowY = Math.sin(endAngle) * r;
-		var arrowAngle = endAngle + Math.TAU/4; // perpendicular to circle
-		var arrowLength = 20;
+		// Draw arrow at the end of arc
+		var arrowX = Math.cos(endAngle) * r+2;
+		var arrowY = Math.sin(endAngle) * r+14;
+		var arrowAngle = 45
+		var arrowLength = r * 0.5;
 
 		ctx.save();
 		ctx.translate(arrowX, arrowY);
 		ctx.rotate(arrowAngle);
 		ctx.beginPath();
-		ctx.moveTo(-arrowLength/2, -arrowLength);
+		ctx.moveTo(-arrowLength, -arrowLength/2);
 		ctx.lineTo(0, 0);
-		ctx.lineTo(arrowLength/2, -arrowLength);
-		ctx.lineWidth = 6;
-		ctx.strokeStyle = strokeColor;
-		ctx.stroke();
+		ctx.lineTo(-arrowLength, arrowLength/2);
+		ctx.fillStyle = color;
+		ctx.fill();
 		ctx.restore();
 
 		// Draw text in the center
-		var fontsize = 50;
+		var fontsize = Math.max(Math.floor(r * 0.75), 12);
 		ctx.font = "bold "+fontsize+"px sans-serif";
 		ctx.textAlign = "center";
 		ctx.textBaseline = "middle";
-		ctx.fillStyle = strokeColor;
+		ctx.fillStyle = color;
 		
 		// Measure text width and adjust font size if needed
 		var width = ctx.measureText(self.text).width;
-		while(width > r*1.5){ // 确保文本不超出圆圈
+		while(width > r*1.2 && fontsize > 8){
 			fontsize -= 2;
 			ctx.font = "bold "+fontsize+"px sans-serif";
 			width = ctx.measureText(self.text).width;

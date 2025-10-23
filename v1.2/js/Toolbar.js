@@ -117,11 +117,12 @@ function Toolbar(loopy){
 	self.createLoopMenu = function(){
 		var menu = document.createElement("div");
 		menu.id = "loop_menu";
-		menu.style.cssText = "position:absolute; left:70px; top:180px; background:#fff; border:2px solid #666; padding:10px; display:none; z-index:100;";
+		menu.setAttribute("class", "loop_menu");
+		menu.style.display = "none";
 
 		// Reinforcing button
 		var reinforcingBtn = document.createElement("div");
-		reinforcingBtn.style.cssText = "cursor:pointer; padding:10px; margin:5px; background:#FFE0E0; border:2px solid #EA3E3E; text-align:center; font-weight:bold;";
+		reinforcingBtn.setAttribute("class", "loop_menu_button reinforcing");
 		reinforcingBtn.innerHTML = "增强环路 (R)";
 		reinforcingBtn.onclick = function(){
 			loopy.looper.setLoopType("reinforcing");
@@ -130,7 +131,7 @@ function Toolbar(loopy){
 
 		// Balancing button
 		var balancingBtn = document.createElement("div");
-		balancingBtn.style.cssText = "cursor:pointer; padding:10px; margin:5px; background:#E0F0FF; border:2px solid #7FD4FF; text-align:center; font-weight:bold;";
+		balancingBtn.setAttribute("class", "loop_menu_button balancing");
 		balancingBtn.innerHTML = "调节环路 (B)";
 		balancingBtn.onclick = function(){
 			loopy.looper.setLoopType("balancing");
@@ -139,7 +140,7 @@ function Toolbar(loopy){
 
 		menu.appendChild(reinforcingBtn);
 		menu.appendChild(balancingBtn);
-		document.body.appendChild(menu);
+		self.dom.appendChild(menu);
 	};
 
 	// Hide loop menu when other tools are selected
