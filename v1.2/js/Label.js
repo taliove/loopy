@@ -32,7 +32,7 @@ function Label(model, config){
 		var y = self.y*2;
 
 		// DRAW HIGHLIGHT???
-		if(self.loopy.sidebar.currentPage.target == self){
+		if(self.loopy.sidebar.currentPage && self.loopy.sidebar.currentPage.target == self){
 			var bounds = self.getBounds();
 			ctx.save();
 			ctx.scale(2,2); // RETINA

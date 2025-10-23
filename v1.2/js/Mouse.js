@@ -1,11 +1,21 @@
-window.Mouse = {};
+window.Mouse = {
+	x: 0,
+	y: 0,
+	prevX: undefined,
+	prevY: undefined,
+	moved: false,
+	pressed: false,
+	rightPressed: false,
+	startedOnTarget: false
+};
 Mouse.init = function(target){
 
 	// Events!
 	var _onmousedown = function(event){
 		Mouse.moved = false;
 		Mouse.pressed = true;
-		Mouse.rightPressed = event.button === 2; // 2 = right button
+		// Check for right button from the original event object
+		Mouse.rightPressed = (event.button !== undefined && event.button === 2); // 2 = right button
 		Mouse.startedOnTarget = true;
 		var _fakeEvent = _onmousemove(event); // so Mouse.x/y is correct
 		publish("mousedown", [_fakeEvent]);
@@ -48,11 +58,23 @@ Mouse.init = function(target){
 		mx = mx*s + tx;
 		my = my*s + ty;
 
+		// Only mark as moved if we have a stored previous position
+		// and the position has actually changed significantly
+		if(Mouse.prevX !== undefined && Mouse.prevY !== undefined){
+			var dx = mx - Mouse.prevX;
+			var dy = my - Mouse.prevY;
+			// Only mark as moved if distance is more than 1 pixel
+			if(Math.sqrt(dx*dx + dy*dy) > 1){
+				Mouse.moved = true;
+			}
+		}
+		Mouse.prevX = mx;
+		Mouse.prevY = my;
+
 		// Mouse!
 		Mouse.x = mx;
 		Mouse.y = my;
 
-		Mouse.moved = true;
 		publish("mousemove", [event]);
 
 		return event;

@@ -20,7 +20,7 @@ function Label(model, config){
 	_configureProperties(self, config, {
 		x: 0,
 		y: 0,
-		text: "..."
+		text: "默认标签"
 	});
 
 	// Draw

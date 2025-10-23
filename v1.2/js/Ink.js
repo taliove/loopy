@@ -32,6 +32,9 @@ function Ink(loopy){
 
 		// Last point
 		var lastPoint = self.strokeData[self.strokeData.length-1];
+		
+		// Safety check - if no stroke data exists, return
+		if(!lastPoint) return;
 
 		// Style
 		ctx.strokeStyle = "#ccc";

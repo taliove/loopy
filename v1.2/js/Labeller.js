@@ -15,8 +15,8 @@ function Labeller(loopy){
 		if(self.loopy.mode!=Loopy.MODE_EDIT) return;
 		if(self.loopy.tool!=Loopy.TOOL_LABEL) return;
 
-		// And if ALREADY EDITING LABEL, just GO TO TOP.
-		if(self.loopy.sidebar.currentPage.id == "Label"){
+		// And if ALREADY EDITING LABEL, just GO BACK TO EDIT.
+		if(self.loopy.sidebar.currentPage && self.loopy.sidebar.currentPage.id == "Label"){
 			loopy.sidebar.showPage("Edit");
 			return;
 		}
