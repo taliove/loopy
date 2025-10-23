@@ -168,23 +168,51 @@ function Loopy(config){
 	});
 
 	subscribe("export/image", function(){
-		// Get the main canvas
-		var canvasses = document.getElementById("canvasses");
-		var canvas = canvasses.querySelector("canvas");
-		if(!canvas) return;
+		
+		// Get bounds of all elements (nodes, edges, labels) in model coordinates
+		var bounds = self.model.getBounds();
+		
+		// If no bounds (empty model), just create a small canvas
+		if(!bounds){
+			bounds = {left: 0, top: 0, right: 100, bottom: 100};
+		}
 
-		// Create a 2x resolution canvas for high quality export
-		var width = canvas.width * 2;
-		var height = canvas.height * 2;
+		// Add padding around content
+		var padding = 40;
+		var left = bounds.left - padding;
+		var top = bounds.top - padding;
+		var width = bounds.right - bounds.left + padding * 2;
+		var height = bounds.bottom - bounds.top + padding * 2;
+
+		// Create export canvas at 2x resolution
 		var exportCanvas = document.createElement("canvas");
-		exportCanvas.width = width;
-		exportCanvas.height = height;
-
-		// Get context and draw the source canvas at 2x scale
+		exportCanvas.width = width * 2;
+		exportCanvas.height = height * 2;
 		var ctx = exportCanvas.getContext("2d");
-		ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, width, height);
+		
+		// Clear background (white)
+		ctx.fillStyle = "#FFF";
+		ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
 
-		// Convert to PNG and download
+		// Set up transform: translate by -left,-top (to move content to origin) then scale by 2
+		ctx.translate(-left * 2, -top * 2);
+
+		// Draw all edges
+		for(var i = 0; i < self.model.edges.length; i++){
+			self.model.edges[i].draw(ctx, false); // false = no signals
+		}
+
+		// Draw all nodes
+		for(var i = 0; i < self.model.nodes.length; i++){
+			self.model.nodes[i].draw(ctx);
+		}
+
+		// Draw all labels
+		for(var i = 0; i < self.model.labels.length; i++){
+			self.model.labels[i].draw(ctx);
+		}
+
+		// Export the canvas as PNG
 		exportCanvas.toBlob(function(blob){
 			var url = URL.createObjectURL(blob);
 			var element = document.createElement('a');
