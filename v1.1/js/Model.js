@@ -299,6 +299,7 @@ function Model(loopy){
 			// 2 - arc
 			// 3 - strength
 			// 4 - rotation (optional)
+			// 5 - isDelayed (optional)
 			var dataEdge = [
 				edge.from.id,
 				edge.to.id,
@@ -307,6 +308,13 @@ function Model(loopy){
 			];
 			if(dataEdge.f==dataEdge.t){
 				dataEdge.push(Math.round(edge.rotation));
+			}
+			if(edge.isDelayed){
+				// Ensure rotation is present if isDelayed is present
+				if(dataEdge.length === 4){
+					dataEdge.push(0); // default rotation
+				}
+				dataEdge.push(edge.isDelayed);
 			}
 			edges.push(dataEdge);
 		}
@@ -381,7 +389,10 @@ function Model(loopy){
 				arc: edge[2],
 				strength: edge[3]
 			};
-			if(edge[4]) edgeConfig.rotation=edge[4];
+			if(edge[4] && (edge.length === 5 || typeof edge[5] === 'boolean')) {
+				edgeConfig.rotation = edge[4];
+			}
+			if(edge[5]) edgeConfig.isDelayed = edge[5];
 			self.addEdge(edgeConfig);
 		}
 

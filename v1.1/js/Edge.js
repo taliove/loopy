@@ -25,7 +25,8 @@ function Edge(model, config){
 		to: _makeErrorFunc("CAN'T LEAVE 'TO' BLANK"),
 		arc: 100,
 		rotation: 0,
-		strength: Edge.defaultStrength
+		strength: Edge.defaultStrength,
+		isDelayed: false
 	});
 
 	// Get my NODES
@@ -386,11 +387,37 @@ function Edge(model, config){
 		}
 
 		// Arc it!
-		ctx.beginPath();
-		if(self.arc>0){
-			ctx.arc(w/2, y2, r, startAngle, end, false);
-		}else{
-			ctx.arc(w/2, y2, r, -startAngle, end, true);
+		if(self.isDelayed){
+			// Draw arrow in two segments with a gap in the middle
+			var gapStart = 0.45; // Start of the gap
+			var gapEnd = 0.55;   // End of the gap
+			
+			// First segment (before the gap)
+			ctx.beginPath();
+			if(self.arc>0){
+				ctx.arc(w/2, y2, r, startAngle, begin + (end-begin)*gapStart, false);
+			}else{
+				ctx.arc(w/2, y2, r, -startAngle, begin + (end-begin)*gapStart, true);
+			}
+			ctx.stroke();
+			
+			// Second segment (after the gap)
+			ctx.beginPath();
+			if(self.arc>0){
+				ctx.arc(w/2, y2, r, begin + (end-begin)*gapEnd, end, false);
+			}else{
+				ctx.arc(w/2, y2, r, begin + (end-begin)*gapEnd, end, true);
+			}
+			ctx.stroke();
+		} else {
+			// Draw full arrow when not delayed
+			ctx.beginPath();
+			if(self.arc>0){
+				ctx.arc(w/2, y2, r, startAngle, end, false);
+			}else{
+				ctx.arc(w/2, y2, r, -startAngle, end, true);
+			}
+			ctx.stroke();
 		}
 
 		// Arrow HEAD!
@@ -405,6 +432,33 @@ function Edge(model, config){
 
 		// Stroke!
 		ctx.stroke();
+
+		// If isDelayed, draw the delay indicator (vertical lines cutting the arrow)
+		if(self.isDelayed){
+			ctx.save();
+			var lineWidth = 3;
+			var lineLength = 22;
+			var spacing = 6; // reduced gap between the two lines
+			
+			// Get positions along the arrow for the delay indicator
+			var pos1 = self.getPositionAlongArrow(0.475);
+			var pos2 = self.getPositionAlongArrow(0.525);
+			
+			// Draw first vertical line at position 1
+			ctx.strokeStyle = "#666";
+			ctx.lineWidth = lineWidth;
+			ctx.beginPath();
+			ctx.moveTo(pos1.x - spacing/2, pos1.y - lineLength/2);
+			ctx.lineTo(pos1.x - spacing/2, pos1.y + lineLength/2);
+			ctx.stroke();
+			
+			// Draw second vertical line at position 2
+			ctx.beginPath();
+			ctx.moveTo(pos2.x + spacing/2, pos2.y - lineLength/2);
+			ctx.lineTo(pos2.x + spacing/2, pos2.y + lineLength/2);
+			ctx.stroke();
+			ctx.restore();
+		}
 
 		// Draw label
 		ctx.font = "100 60px sans-serif";

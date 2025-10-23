@@ -116,6 +116,12 @@ function Sidebar(loopy){
 				Edge.defaultStrength = value;
 			}
 		}));
+		page.addComponent("isDelayed", new ComponentToggle({
+			label: "<br><br>延迟关系:",
+			oninput: function(value){
+				// oninput callback if needed
+			}
+		}));
 		page.addComponent(new ComponentHTML({
 			html: "(要建立更强的关系，请绘制多个箭头！)<br><br>"+
 			"(要建立延迟关系，请绘制更长的箭头)"
@@ -471,6 +477,32 @@ function ComponentOutput(config){
 	// Output the string!
 	self.output = function(string){
 		self.dom.value = string;
+	};
+
+}
+
+function ComponentToggle(config){
+
+	// Inherit
+	var self = this;
+	Component.apply(self);
+
+	// DOM: label + checkbox
+	self.dom = document.createElement("div");
+	var label = _createLabel(config.label);
+	self.dom.appendChild(label);
+	
+	var checkbox = document.createElement("input");
+	checkbox.type = "checkbox";
+	checkbox.setAttribute("class", "component_toggle");
+	checkbox.onchange = function(event){
+		self.setValue(checkbox.checked);
+	};
+	self.dom.appendChild(checkbox);
+
+	// Show
+	self.show = function(){
+		checkbox.checked = self.getValue();
 	};
 
 }
