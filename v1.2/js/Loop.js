@@ -7,13 +7,17 @@ LOOP!
 
 Loop.defaultType = "reinforcing"; // reinforcing or balancing
 Loop.defaultSize = 24; // 默认大小 - 第二小的等级（7个等级中）
-Loop.defaultHue = 0; // 默认颜色（对应reinforcing的红色）
-Loop.arrowRotation = 3; // 箭头旋转度数（逆时针，度数制）
+Loop.defaultHue = 0; // 默认颜色（使用Node的颜色系统）
+Loop.arrowRotation = 9; // 箭头旋转度数（逆时针，度数制）
 
-// 颜色定义
+// 颜色定义 - 使用Node的颜色系统
 Loop.COLORS = {
-	0: "#EA3E3E", // red - reinforcing
-	1: "#7FD4FF"  // blue - balancing
+	0: "#EA3E3E", // red
+	1: "#EA9D51", // orange
+	2: "#FEEE43", // yellow
+	3: "#BFEE3F", // green
+	4: "#7FD4FF", // blue
+	5: "#A97FFF"  // purple
 };
 
 function Loop(model, config){
@@ -36,15 +40,6 @@ function Loop(model, config){
 		radius: Loop.defaultSize, // 圆的半径
 		hue: Loop.defaultHue // 颜色
 	});
-
-	// 确保hue与loopType一致（如果没有明确指定）
-	if(config && !config.hue){
-		if(self.loopType === "reinforcing"){
-			self.hue = 0;
-		}else{
-			self.hue = 1;
-		}
-	}
 
 	//////////////////////////////////////
 	// UPDATE & DRAW /////////////////////
@@ -84,14 +79,14 @@ function Loop(model, config){
 
 		ctx.beginPath();
 		ctx.arc(0, 0, r, startAngle, endAngle, false);
-		ctx.lineWidth = 8;
+		ctx.lineWidth = r/5;
 		ctx.strokeStyle = color;
 		ctx.stroke();
 
 		// Draw arrow at the end of arc
-		var arrowX = Math.cos(endAngle) * r+2;
-		var arrowY = Math.sin(endAngle) * r+14;
-		var arrowAngle = 45
+		var arrowX = Math.cos(endAngle) * r+r/5;
+		var arrowY = Math.sin(endAngle) * r+r/3.7;
+		var arrowAngle = 44.9
 		var arrowLength = r * 0.5;
 
 		ctx.save();

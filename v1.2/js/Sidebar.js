@@ -205,7 +205,7 @@ function Sidebar(loopy){
 		page.addComponent("hue", new ComponentSlider({
 			bg: "color",
 			label: "颜色:",
-			options: [0,1],
+			options: [0,1,2,3,4,5],
 			oninput: function(value){
 				Loop.defaultHue = value;
 			}

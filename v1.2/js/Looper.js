@@ -37,8 +37,8 @@ function Looper(loopy){
 		var prefix = (self.currentLoopType === "reinforcing") ? "R" : "B";
 		var text = prefix + number;
 
-		// 确定hue值（增强=0 红色，调节=1 蓝色）
-		var hue = (self.currentLoopType === "reinforcing") ? 0 : 1;
+		// 根据loopType设置默认颜色（增强=0红色，调节=4蓝色）
+		var hue = (self.currentLoopType === "reinforcing") ? 0 : 4;
 
 		// Create loop at mouse position
 		var loop = loopy.model.addLoop({
