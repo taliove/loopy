@@ -111,7 +111,7 @@ div[big=yes] .play_button_label{
 	left: 0px;
 	top: calc(33% - 142.5px); /* 33% - half of toolbar height */
 
-	width:75px; height:280px;
+	width:75px;
 	padding: 5px;
 	background-color: #ddd;
 
@@ -144,42 +144,49 @@ div[big=yes] .play_button_label{
 	position: absolute;
 	left: 70px;
 	top: 180px;
-	background: #fff;
-	border: 2px solid #666;
-	padding: 10px;
+	width: 75px;
+	padding: 5px;
+	box-shadow: 1px 1px 10px rgba(0,0,0,0.3);
+	background-color: #ddd;
 	z-index: 100;
-	border-radius: 4px;
-	box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+	
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .loop_menu_button{
-	cursor: pointer;
-	padding: 10px;
+	width: 60px;
+	height: 60px;
 	margin: 5px;
-	text-align: center;
-	font-weight: bold;
-	border-radius: 3px;
-	transition: all 0.2s;
+	border: 2px solid #ddd;
+	cursor: pointer;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
 .loop_menu_button.reinforcing{
-	background: #FFE0E0;
-	border: 2px solid #EA3E3E;
-	color: #EA3E3E;
+	background-image: url('icons/loop_r.png');
 }
 
 .loop_menu_button.reinforcing:hover{
-	background: #FFB0B0;
+	border: 2px solid #EA3E3E;
+	background-color: #FFE0E0;
 }
 
 .loop_menu_button.balancing{
-	background: #E0F0FF;
-	border: 2px solid #7FD4FF;
-	color: #7FD4FF;
+	background-image: url('icons/loop_b.png');
 }
 
 .loop_menu_button.balancing:hover{
-	background: #B0E0FF;
+	border: 2px solid #7FD4FF;
+	background-color: #E0F0FF;
 }
 
 /**********

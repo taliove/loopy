@@ -123,7 +123,8 @@ function Toolbar(loopy){
 		// Reinforcing button
 		var reinforcingBtn = document.createElement("div");
 		reinforcingBtn.setAttribute("class", "loop_menu_button reinforcing");
-		reinforcingBtn.innerHTML = "增强环路 (R)";
+		reinforcingBtn.setAttribute("data-balloon", "增强环路");
+		reinforcingBtn.setAttribute("data-balloon-pos", "right");
 		reinforcingBtn.onclick = function(){
 			loopy.looper.setLoopType("reinforcing");
 			self.hideLoopMenu();
@@ -132,7 +133,8 @@ function Toolbar(loopy){
 		// Balancing button
 		var balancingBtn = document.createElement("div");
 		balancingBtn.setAttribute("class", "loop_menu_button balancing");
-		balancingBtn.innerHTML = "调节环路 (B)";
+		balancingBtn.setAttribute("data-balloon", "调节环路");
+		balancingBtn.setAttribute("data-balloon-pos", "right");
 		balancingBtn.onclick = function(){
 			loopy.looper.setLoopType("balancing");
 			self.hideLoopMenu();
