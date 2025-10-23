@@ -16,10 +16,12 @@ function Dragger(loopy){
 
 	// Canvas dragging
 	self.draggingCanvas = false;
-	self.canvasDragOffsetX = 0;
-	self.canvasDragOffsetY = 0;
+	self.canvasDragStartScreenX = 0;
+	self.canvasDragStartScreenY = 0;
+	self.canvasDragStartOffsetX = 0;
+	self.canvasDragStartOffsetY = 0;
 
-	subscribe("mousedown",function(){
+	subscribe("mousedown",function(event){
 
 		// ONLY WHEN EDITING w DRAG
 		if(self.loopy.mode!=Loopy.MODE_EDIT) return;
@@ -28,8 +30,10 @@ function Dragger(loopy){
 		// RIGHT-CLICK TO DRAG CANVAS
 		if(Mouse.rightPressed){
 			self.draggingCanvas = true;
-			self.canvasDragOffsetX = Mouse.x - loopy.offsetX;
-			self.canvasDragOffsetY = Mouse.y - loopy.offsetY;
+			self.canvasDragStartScreenX = event.x;
+			self.canvasDragStartScreenY = event.y;
+			self.canvasDragStartOffsetX = loopy.offsetX;
+			self.canvasDragStartOffsetY = loopy.offsetY;
 			return;
 		}
 
@@ -65,11 +69,13 @@ function Dragger(loopy){
 
 		// NOTHING UNDER CURSOR - DRAG CANVAS!
 		self.draggingCanvas = true;
-		self.canvasDragOffsetX = Mouse.x - loopy.offsetX;
-		self.canvasDragOffsetY = Mouse.y - loopy.offsetY;
+		self.canvasDragStartScreenX = event.x;
+		self.canvasDragStartScreenY = event.y;
+		self.canvasDragStartOffsetX = loopy.offsetX;
+		self.canvasDragStartOffsetY = loopy.offsetY;
 
 	});
-	subscribe("mousemove",function(){
+	subscribe("mousemove",function(event){
 
 		// ONLY WHEN EDITING w DRAG
 		if(self.loopy.mode!=Loopy.MODE_EDIT) return;
@@ -77,8 +83,10 @@ function Dragger(loopy){
 
 		// If you're dragging the CANVAS, move it!
 		if(self.draggingCanvas){
-			loopy.offsetX = Mouse.x - self.canvasDragOffsetX;
-			loopy.offsetY = Mouse.y - self.canvasDragOffsetY;
+			var dx = event.x - self.canvasDragStartScreenX;
+			var dy = event.y - self.canvasDragStartScreenY;
+			loopy.offsetX = self.canvasDragStartOffsetX + dx;
+			loopy.offsetY = self.canvasDragStartOffsetY + dy;
 			// Publish a custom event to keep draw() active while dragging canvas
 			publish("canvas/drag");
 			return;
@@ -175,8 +183,6 @@ function Dragger(loopy){
 		self.draggingCanvas = false;
 		self.offsetX = 0;
 		self.offsetY = 0;
-		self.canvasDragOffsetX = 0;
-		self.canvasDragOffsetY = 0;
 
 	});
 

@@ -7,18 +7,25 @@ Mouse.init = function(target){
 		Mouse.pressed = true;
 		Mouse.rightPressed = event.button === 2; // 2 = right button
 		Mouse.startedOnTarget = true;
-		publish("mousedown");
+		var _fakeEvent = _onmousemove(event); // so Mouse.x/y is correct
+		publish("mousedown", [_fakeEvent]);
 		if(Mouse.rightPressed) publish("mousedown/right");
 	};
 	var _onmousemove = function(event){
 
 		// DO THE INVERSE
 		var canvasses = document.getElementById("canvasses");
-		var tx = 0;
-		var ty = 0;
 		var s = 1/loopy.offsetScale;
 		var CW = canvasses.clientWidth - _PADDING - _PADDING;
 		var CH = canvasses.clientHeight - _PADDING_BOTTOM - _PADDING;
+
+		// Start with mouse position
+		var mx = event.x;
+		var my = event.y;
+
+		// Then transform to world space
+		var tx = 0;
+		var ty = 0;
 
 		if(loopy.embedded){
 			tx -= _PADDING/2; // dunno why but this is needed
@@ -37,19 +44,21 @@ Mouse.init = function(target){
 		tx -= loopy.offsetX;
 		ty -= loopy.offsetY;
 
-		// Mutliply by Mouse vector
-		var mx = event.x*s + tx;
-		var my = event.y*s + ty;
+		// Apply transform
+		mx = mx*s + tx;
+		my = my*s + ty;
 
 		// Mouse!
 		Mouse.x = mx;
 		Mouse.y = my;
 
 		Mouse.moved = true;
-		publish("mousemove");
+		publish("mousemove", [event]);
+
+		return event;
 
 	};
-	var _onmouseup = function(){
+	var _onmouseup = function(event){
 		Mouse.pressed = false;
 		if(Mouse.rightPressed) publish("mouseup/right");
 		Mouse.rightPressed = false;
