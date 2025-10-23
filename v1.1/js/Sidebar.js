@@ -65,12 +65,21 @@ function Sidebar(loopy){
 				Node.defaultValue = value;
 			}
 		}));
+		page.addComponent("radius", new ComponentSlider({
+			bg: "initial",
+			label: "节点大小:",
+			options: [30, 45, 60, 75, 90, 105, 120],
+			oninput: function(value){
+				Node.DEFAULT_RADIUS = value;
+			}
+		}));
 		page.onedit = function(){
 
 			// Set color of Slider
 			var node = page.target;
 			var color = Node.COLORS[node.hue];
 			page.getComponent("init").setBGColor(color);
+			page.getComponent("radius").setBGColor(color);
 
 			// Focus on the name field IF IT'S "" or "?"
 			var name = node.label;

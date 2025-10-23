@@ -265,6 +265,7 @@ function Model(loopy){
 			// 4 - label
 			// 5 - hue
 			// 6 - shape (optional, defaults to 'circle')
+			// 7 - radius (optional, defaults to Node.DEFAULT_RADIUS)
 			var nodeData = [
 				node.id,
 				Math.round(node.x),
@@ -276,6 +277,14 @@ function Model(loopy){
 			// Only add shape if it's not the default 'circle'
 			if(node.shape && node.shape !== 'circle'){
 				nodeData.push(node.shape);
+				// If shape is added and radius is not default, add radius
+				if(node.radius && node.radius !== 60){
+					nodeData.push(node.radius);
+				}
+			}else if(node.radius && node.radius !== 60){
+				// If shape is default but radius is not, add both
+				nodeData.push(node.shape || 'circle');
+				nodeData.push(node.radius);
 			}
 			nodes.push(nodeData);
 		}
@@ -355,6 +364,10 @@ function Model(loopy){
 			// Add shape if it exists (index 6)
 			if(node[6]){
 				nodeConfig.shape = node[6];
+			}
+			// Add radius if it exists (index 7)
+			if(node[7]){
+				nodeConfig.radius = node[7];
 			}
 			self.addNode(nodeConfig);
 		}
