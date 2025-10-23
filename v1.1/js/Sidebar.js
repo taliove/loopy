@@ -31,18 +31,18 @@ function Sidebar(loopy){
 		var page = new SidebarPage();
 		page.addComponent(new ComponentButton({
 			header: true,
-			label: "back to top",
+			label: "返回顶部",
 			onclick: function(){
 				self.showPage("Edit");
 			}
 		}));
 		page.addComponent("label", new ComponentInput({
-			label: "<br><br>Name:"
+			label: "<br><br>名称:"
 			//label: "Name:"
 		}));
 		page.addComponent("shape", new ComponentSlider({
 			bg: "shape",
-			label: "Shape:",
+			label: "形状:",
 			options: ["circle", "rectangle"],
 			oninput: function(value){
 				Node.defaultShape = value;
@@ -50,7 +50,7 @@ function Sidebar(loopy){
 		}));
 		page.addComponent("hue", new ComponentSlider({
 			bg: "color",
-			label: "Color:",
+			label: "颜色:",
 			options: [0,1,2,3,4,5],
 			oninput: function(value){
 				Node.defaultHue = value;
@@ -58,7 +58,7 @@ function Sidebar(loopy){
 		}));
 		page.addComponent("init", new ComponentSlider({
 			bg: "initial",
-			label: "Start Amount:",
+			label: "初始数量:",
 			options: [0, 0.16, 0.33, 0.50, 0.66, 0.83, 1],
 			//options: [0, 1/6, 2/6, 3/6, 4/6, 5/6, 1],
 			oninput: function(value){
@@ -78,7 +78,7 @@ function Sidebar(loopy){
 
 		};
 		page.addComponent(new ComponentButton({
-			label: "delete node",
+			label: "删除节点",
 			//label: "delete circle",
 			onclick: function(node){
 				node.kill();
@@ -93,14 +93,14 @@ function Sidebar(loopy){
 		var page = new SidebarPage();
 		page.addComponent(new ComponentButton({
 			header: true,
-			label: "back to top",
+			label: "返回顶部",
 			onclick: function(){
 				self.showPage("Edit");
 			}
 		}));
 		page.addComponent("strength", new ComponentSlider({
 			bg: "strength",
-			label: "<br><br>Relationship:",
+			label: "<br><br>关系:",
 			//label: "Relationship:",
 			options: [1, -1],
 			oninput: function(value){
@@ -108,12 +108,12 @@ function Sidebar(loopy){
 			}
 		}));
 		page.addComponent(new ComponentHTML({
-			html: "(to make a stronger relationship, draw multiple arrows!)<br><br>"+
-			"(to make a delayed relationship, draw longer arrows)"
+			html: "(要建立更强的关系，请绘制多个箭头！)<br><br>"+
+			"(要建立延迟关系，请绘制更长的箭头)"
 		}));
 		page.addComponent(new ComponentButton({
 			//label: "delete edge",
-			label: "delete arrow",
+			label: "删除箭头",
 			//label: "delete relationship",
 			onclick: function(edge){
 				edge.kill();
@@ -128,13 +128,13 @@ function Sidebar(loopy){
 		var page = new SidebarPage();
 		page.addComponent(new ComponentButton({
 			header: true,
-			label: "back to top",
+			label: "返回顶部",
 			onclick: function(){
 				self.showPage("Edit");
 			}
 		}));
 		page.addComponent("text", new ComponentInput({
-			label: "<br><br>Label:",
+			label: "<br><br>标签:",
 			//label: "Label:",
 			textarea: true
 		}));
@@ -158,7 +158,7 @@ function Sidebar(loopy){
 
 		};
 		page.addComponent(new ComponentButton({
-			label: "delete label",
+			label: "删除标签",
 			onclick: function(label){
 				label.kill();
 				self.showPage("Edit");
@@ -173,26 +173,26 @@ function Sidebar(loopy){
 		page.addComponent(new ComponentHTML({
 			html: ""+
 			
-			"<b style='font-size:1.4em'>LOOPY</b> (v1.1)<br>a tool for thinking in systems<br><br>"+
+			"<b style='font-size:1.4em'>LOOPY</b> (v1.1)<br>系统思维工具<br><br>"+
 
-			"<span class='mini_button' onclick='publish(\"modal\",[\"examples\"])'>see examples</span> "+
-			"<span class='mini_button' onclick='publish(\"modal\",[\"howto\"])'>how to</span> "+
-			"<span class='mini_button' onclick='publish(\"modal\",[\"credits\"])'>credits</span><br><br>"+
+			"<span class='mini_button' onclick='publish(\"modal\",[\"examples\"])'>查看示例</span> "+
+			"<span class='mini_button' onclick='publish(\"modal\",[\"howto\"])'>使用教程</span> "+
+			"<span class='mini_button' onclick='publish(\"modal\",[\"credits\"])'>致谢</span><br><br>"+
 
 			"<hr/><br>"+
 
-			"<span class='mini_button' onclick='publish(\"modal\",[\"save_link\"])'>save as link</span> <br><br>"+
-			"<span class='mini_button' onclick='publish(\"export/file\")'>save as file</span> "+
-			"<span class='mini_button' onclick='publish(\"import/file\")'>load from file</span> <br><br>"+
-			"<span class='mini_button' onclick='publish(\"modal\",[\"embed\"])'>embed in your website</span> <br><br>"+
-			"<span class='mini_button' onclick='publish(\"modal\",[\"save_gif\"])'>make a GIF using LICEcap</span> <br><br>"+
+			"<span class='mini_button' onclick='publish(\"modal\",[\"save_link\"])'>保存为链接</span> <br><br>"+
+			"<span class='mini_button' onclick='publish(\"export/file\")'>保存为文件</span> "+
+			"<span class='mini_button' onclick='publish(\"import/file\")'>从文件加载</span> <br><br>"+
+			"<span class='mini_button' onclick='publish(\"modal\",[\"embed\"])'>嵌入到您的网站</span> <br><br>"+
+			"<span class='mini_button' onclick='publish(\"modal\",[\"save_gif\"])'>使用 LICEcap 制作 GIF</span> <br><br>"+
 
 			"<hr/><br>"+
 				
-			"<a target='_blank' href='../'>LOOPY</a> is "+
-			"made by <a target='_blank' href='http://ncase.me'>nicky case</a> "+
-			"with your support <a target='_blank' href='https://www.patreon.com/ncase'>on patreon</a> &lt;3<br><br>"+
-			"<span style='font-size:0.85em'>P.S: go read <a target='_blank' href='https://www.amazon.com/Thinking-Systems-Donella-H-Meadows/dp/1603580557'>Thinking In Systems</a>, thx</span>"
+			"<a target='_blank' href='../'>LOOPY</a> 由 "+
+			"<a target='_blank' href='http://ncase.me'>nicky case</a> 制作，"+
+			"感谢您在 <a target='_blank' href='https://www.patreon.com/ncase'>patreon</a> 上的支持 &lt;3<br><br>"+
+			"<span style='font-size:0.85em'>附：推荐阅读 <a target='_blank' href='https://www.amazon.com/Thinking-Systems-Donella-H-Meadows/dp/1603580557'>《系统思考》</a></span>"
 
 		}));
 		self.addPage("Edit", page);

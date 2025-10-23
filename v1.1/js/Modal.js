@@ -79,7 +79,7 @@ function Modal(loopy){
 		label.style.fontSize = "18px";
 		label.style.marginTop = "6px";
 		label.style.color = "#777";
-		label.innerHTML = "need ideas for simulations? check out <span style='text-decoration:underline; cursor:pointer' onclick='publish(\"modal\",[\"examples\"])'>the examples!</span>";
+		label.innerHTML = "需要模拟的灵感？查看<span style='text-decoration:underline; cursor:pointer' onclick='publish(\"modal\",[\"examples\"])'>示例！</span>";
 		page.dom.appendChild(label);
 
 		self.addPage("howto", page);
@@ -106,7 +106,7 @@ function Modal(loopy){
 		page.width = 500;
 		page.height = 155;
 		page.addComponent(new ComponentHTML({
-			html: "copy your link:"
+			html: "复制您的链接:"
 		}));
 		var output = page.addComponent(new ComponentOutput({}));
 
@@ -115,7 +115,7 @@ function Modal(loopy){
 		label.style.fontSize = "15px";
 		label.style.marginTop = "6px";
 		label.style.color = "#888";
-		label.innerHTML = "(this is a long URL, so you may want to use a link-shortener like <a target='_blank' href='https://bitly.com/'>bit.ly</a>)";
+		label.innerHTML = "(这是一个很长的 URL，您可能需要使用短链接服务，如 <a target='_blank' href='https://bitly.com/'>bit.ly</a>)";
 		page.dom.appendChild(label);
 
 		// chars left...
@@ -124,7 +124,7 @@ function Modal(loopy){
 		chars.style.fontSize = "15px";
 		chars.style.marginTop = "3px";
 		chars.style.color = "#888";
-		chars.innerHTML = "X out of 2048 characters";
+		chars.innerHTML = "X / 2048 字符";
 		page.dom.appendChild(chars);
 
 		page.onshow = function(){
@@ -135,9 +135,9 @@ function Modal(loopy){
 			output.dom.select();
 
 			// Chars left
-			var html = link.length+" / 2048 characters";
+			var html = link.length+" / 2048 字符";
 			if(link.length>2048){
-				html += " - MAY BE TOO LONG FOR MOST BROWSERS";
+				html += " - 对于大多数浏览器可能太长";
 			}
 			chars.innerHTML = html;
 			chars.style.fontWeight = (link.length>2048) ? "bold" : "100";
@@ -171,13 +171,13 @@ function Modal(loopy){
 
 		// Label
 		var label = document.createElement("div");
-		label.innerHTML = "<br>PREVIEW &rarr;<br><br>";
+		label.innerHTML = "<br>预览 &rarr;<br><br>";
 		sidebar.appendChild(label);
 
 		// Label 2
 		var label = document.createElement("div");
 		label.style.fontSize = "15px";
-		label.innerHTML = "what size do you want your embed to be?";
+		label.innerHTML = "您希望嵌入的尺寸是多少？";
 		sidebar.appendChild(label);
 
 		// Size!
@@ -194,7 +194,7 @@ function Modal(loopy){
 		// Label 3
 		var label = document.createElement("div");
 		label.style.fontSize = "15px";
-		label.innerHTML = "<br><br>copy this code into your website's html:";
+		label.innerHTML = "<br><br>将此代码复制到您网站的 HTML 中:";
 		sidebar.appendChild(label);
 
 		// Output!
@@ -206,7 +206,7 @@ function Modal(loopy){
 		var label = document.createElement("div");
 		label.style.fontSize = "15px";
 		label.style.textAlign = "right";
-		label.innerHTML = "<br><br>(note: the REMIX button lets someone else, well, remix your model! don't worry, it'll just be a copy, it won't affect the original.)";
+		label.innerHTML = "<br><br>(注意：REMIX 按钮允许其他人重新混合您的模型！别担心，这只是一个副本，不会影响原始模型。)";
 		sidebar.appendChild(label);
 
 		// IFRAME
