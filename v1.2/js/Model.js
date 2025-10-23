@@ -165,9 +165,10 @@ function Model(loopy){
 	var drawCountdownFull = 60; // two-second buffer!
 	var drawCountdown = drawCountdownFull; 
 	
-	// ONLY IF MOUSE MOVE / CLICK
+	// ONLY IF MOUSE MOVE / CLICK / CANVAS DRAG
 	subscribe("mousemove", function(){ drawCountdown=drawCountdownFull; });
 	subscribe("mousedown", function(){ drawCountdown=drawCountdownFull; });
+	subscribe("canvas/drag", function(){ drawCountdown=drawCountdownFull; });
 
 	// OR INFO CHANGED
 	subscribe("model/changed", function(){

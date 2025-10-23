@@ -14,11 +14,24 @@ function Dragger(loopy){
 	self.offsetX = 0;
 	self.offsetY = 0;
 
+	// Canvas dragging
+	self.draggingCanvas = false;
+	self.canvasDragOffsetX = 0;
+	self.canvasDragOffsetY = 0;
+
 	subscribe("mousedown",function(){
 
 		// ONLY WHEN EDITING w DRAG
 		if(self.loopy.mode!=Loopy.MODE_EDIT) return;
 		if(self.loopy.tool!=Loopy.TOOL_DRAG) return;
+
+		// RIGHT-CLICK TO DRAG CANVAS
+		if(Mouse.rightPressed){
+			self.draggingCanvas = true;
+			self.canvasDragOffsetX = Mouse.x - loopy.offsetX;
+			self.canvasDragOffsetY = Mouse.y - loopy.offsetY;
+			return;
+		}
 
 		// Any node under here? If so, start dragging!
 		var dragNode = loopy.model.getNodeByPoint(Mouse.x, Mouse.y);
@@ -50,12 +63,26 @@ function Dragger(loopy){
 			return;
 		}
 
+		// NOTHING UNDER CURSOR - DRAG CANVAS!
+		self.draggingCanvas = true;
+		self.canvasDragOffsetX = Mouse.x - loopy.offsetX;
+		self.canvasDragOffsetY = Mouse.y - loopy.offsetY;
+
 	});
 	subscribe("mousemove",function(){
 
 		// ONLY WHEN EDITING w DRAG
 		if(self.loopy.mode!=Loopy.MODE_EDIT) return;
 		if(self.loopy.tool!=Loopy.TOOL_DRAG) return;
+
+		// If you're dragging the CANVAS, move it!
+		if(self.draggingCanvas){
+			loopy.offsetX = Mouse.x - self.canvasDragOffsetX;
+			loopy.offsetY = Mouse.y - self.canvasDragOffsetY;
+			// Publish a custom event to keep draw() active while dragging canvas
+			publish("canvas/drag");
+			return;
+		}
 
 		// If you're dragging a NODE, move it around!
 		if(self.dragging && self.dragging._CLASS_=="Node"){
@@ -145,8 +172,11 @@ function Dragger(loopy){
 
 		// Let go!
 		self.dragging = null;
+		self.draggingCanvas = false;
 		self.offsetX = 0;
 		self.offsetY = 0;
+		self.canvasDragOffsetX = 0;
+		self.canvasDragOffsetY = 0;
 
 	});
 

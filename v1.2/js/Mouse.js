@@ -5,8 +5,10 @@ Mouse.init = function(target){
 	var _onmousedown = function(event){
 		Mouse.moved = false;
 		Mouse.pressed = true;
+		Mouse.rightPressed = event.button === 2; // 2 = right button
 		Mouse.startedOnTarget = true;
 		publish("mousedown");
+		if(Mouse.rightPressed) publish("mousedown/right");
 	};
 	var _onmousemove = function(event){
 
@@ -49,6 +51,8 @@ Mouse.init = function(target){
 	};
 	var _onmouseup = function(){
 		Mouse.pressed = false;
+		if(Mouse.rightPressed) publish("mouseup/right");
+		Mouse.rightPressed = false;
 		if(Mouse.startedOnTarget){
 			publish("mouseup");
 			if(!Mouse.moved) publish("mouseclick");

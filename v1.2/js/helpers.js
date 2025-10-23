@@ -137,6 +137,7 @@ function _addMouseEvents(target, onmousedown, onmousemove, onmouseup){
 	var _onmousedown = function(event){
 		var _fakeEvent = _onmousemove(event);
 		onmousedown(_fakeEvent);
+		if(event.button === 2) event.preventDefault(); // right-click
 	};
 	var _onmousemove = function(event){
 		
@@ -168,6 +169,11 @@ function _addMouseEvents(target, onmousedown, onmousemove, onmouseup){
 	target.addEventListener("mousedown", _onmousedown);
 	target.addEventListener("mousemove", _onmousemove);
 	document.body.addEventListener("mouseup", _onmouseup);
+
+	// Prevent context menu on right-click
+	target.addEventListener("contextmenu", function(event){
+		event.preventDefault();
+	});
 
 	// TOUCH.
 	target.addEventListener("touchstart",_onmousedown,false);
