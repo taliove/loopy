@@ -72,6 +72,14 @@ function Toolbar(loopy){
 		}
 	});
 	self.addButton({
+		id: "loop",
+		tooltip: "(L)OOP",
+		callback: function(){
+			self.setTool("loop");
+			self.showLoopMenu();
+		}
+	});
+	self.addButton({
 		id: "drag",
 		tooltip: "MO(V)E",
 		callback: function(){
@@ -88,6 +96,60 @@ function Toolbar(loopy){
 
 	// Select button
 	buttonsByID.ink.callback();
+
+	// Loop menu functions
+	self.showLoopMenu = function(){
+		// Create loop menu if it doesn't exist
+		if(!document.getElementById("loop_menu")){
+			self.createLoopMenu();
+		}
+		var menu = document.getElementById("loop_menu");
+		menu.style.display = "block";
+	};
+
+	self.hideLoopMenu = function(){
+		var menu = document.getElementById("loop_menu");
+		if(menu){
+			menu.style.display = "none";
+		}
+	};
+
+	self.createLoopMenu = function(){
+		var menu = document.createElement("div");
+		menu.id = "loop_menu";
+		menu.style.cssText = "position:absolute; left:70px; top:180px; background:#fff; border:2px solid #666; padding:10px; display:none; z-index:100;";
+
+		// Reinforcing button
+		var reinforcingBtn = document.createElement("div");
+		reinforcingBtn.style.cssText = "cursor:pointer; padding:10px; margin:5px; background:#FFE0E0; border:2px solid #EA3E3E; text-align:center; font-weight:bold;";
+		reinforcingBtn.innerHTML = "增强环路 (R)";
+		reinforcingBtn.onclick = function(){
+			loopy.looper.setLoopType("reinforcing");
+			self.hideLoopMenu();
+		};
+
+		// Balancing button
+		var balancingBtn = document.createElement("div");
+		balancingBtn.style.cssText = "cursor:pointer; padding:10px; margin:5px; background:#E0F0FF; border:2px solid #7FD4FF; text-align:center; font-weight:bold;";
+		balancingBtn.innerHTML = "调节环路 (B)";
+		balancingBtn.onclick = function(){
+			loopy.looper.setLoopType("balancing");
+			self.hideLoopMenu();
+		};
+
+		menu.appendChild(reinforcingBtn);
+		menu.appendChild(balancingBtn);
+		document.body.appendChild(menu);
+	};
+
+	// Hide loop menu when other tools are selected
+	var originalSetTool = self.setTool;
+	self.setTool = function(tool){
+		originalSetTool(tool);
+		if(tool !== "loop"){
+			self.hideLoopMenu();
+		}
+	};
 
 	// Hide & Show
 

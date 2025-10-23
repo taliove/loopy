@@ -16,6 +16,7 @@
 		86: "drag", // Mo(v)e
 		69: "erase", // (E)rase
 		84: "label", // (T)ext
+		76: "loop", // (L)oop
 		83: "save", // (S)ave
 
 	};

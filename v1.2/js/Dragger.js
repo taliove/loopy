@@ -57,6 +57,16 @@ function Dragger(loopy){
 			return;
 		}
 
+		// Any loop under here? If so, start dragging!
+		var dragLoop = loopy.model.getLoopByPoint(Mouse.x, Mouse.y);
+		if(dragLoop){
+			self.dragging = dragLoop;
+			self.offsetX = Mouse.x - dragLoop.x;
+			self.offsetY = Mouse.y - dragLoop.y;
+			loopy.sidebar.edit(dragLoop); // and edit!
+			return;
+		}
+
 		// Any edge under here? If so, start dragging!
 		var dragEdge = loopy.model.getEdgeByPoint(Mouse.x, Mouse.y);
 		if(dragEdge){
@@ -101,6 +111,21 @@ function Dragger(loopy){
 			var node = self.dragging;
 			node.x = Mouse.x - self.offsetX;
 			node.y = Mouse.y - self.offsetY;
+
+			// update coz visual glitches
+			loopy.model.update();
+			
+		}
+
+		// If you're dragging a LOOP, move it around!
+		if(self.dragging && self.dragging._CLASS_=="Loop"){
+
+			// Model's been changed!
+			publish("model/changed");
+			
+			var loop = self.dragging;
+			loop.x = Mouse.x - self.offsetX;
+			loop.y = Mouse.y - self.offsetY;
 
 			// update coz visual glitches
 			loopy.model.update();

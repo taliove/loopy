@@ -145,6 +145,39 @@ function Model(loopy){
 
 
 	///////////////////
+	// LOOPS //////////
+	///////////////////
+
+	// Loops
+	self.loops = [];
+
+	// Add loop
+	self.addLoop = function(config){
+
+		// Model's been changed!
+		publish("model/changed");
+
+		// Add loop
+		var loop = new Loop(self,config);
+		self.loops.push(loop);
+		self.update();
+		return loop;
+	};
+
+	// Remove loop
+	self.removeLoop = function(loop){
+
+		// Model's been changed!
+		publish("model/changed");
+
+		// Remove loop
+		self.loops.splice(self.loops.indexOf(loop),1);
+		
+	};
+
+
+
+	///////////////////
 	// UPDATE & DRAW //
 	///////////////////
 
@@ -230,10 +263,11 @@ function Model(loopy){
 		}
 		ctx.setTransform(s, 0, 0, s, tx, ty);
 
-		// Draw labels THEN edges THEN nodes
+		// Draw labels THEN edges THEN nodes THEN loops
 		for(var i=0;i<self.labels.length;i++) self.labels[i].draw(ctx);
 		for(var i=0;i<self.edges.length;i++) self.edges[i].draw(ctx);
 		for(var i=0;i<self.nodes.length;i++) self.nodes[i].draw(ctx);
+		for(var i=0;i<self.loops.length;i++) self.loops[i].draw(ctx);
 
 		// Restore
 		ctx.restore();
@@ -254,6 +288,7 @@ function Model(loopy){
 		// 1 - edges
 		// 2 - labels
 		// 3 - UID
+		// 4 - loops
 
 		// Nodes
 		var nodes = [];
@@ -339,6 +374,27 @@ function Model(loopy){
 		// META.
 		data.push(Node._UID);
 
+		// Loops
+		var loops = [];
+		for(var i=0;i<self.loops.length;i++){
+			var loop = self.loops[i];
+			// 0 - id
+			// 1 - x
+			// 2 - y
+			// 3 - text
+			// 4 - loopType
+			// 5 - radius
+			loops.push([
+				loop.id,
+				Math.round(loop.x),
+				Math.round(loop.y),
+				encodeURIComponent(encodeURIComponent(loop.text)),
+				loop.loopType,
+				loop.radius
+			]);
+		}
+		data.push(loops);
+
 		// Return as string!
 		var dataString = JSON.stringify(data);
 		dataString = dataString.replace(/"/gi, "%22"); // and ONLY URIENCODE THE QUOTES
@@ -358,6 +414,7 @@ function Model(loopy){
 		var edges = data[1];
 		var labels = data[2];
 		var UID = data[3];
+		var loops = data[4] || []; // Optional: loops might not exist in old saves
 
 		// Nodes
 		for(var i=0;i<nodes.length;i++){
@@ -410,6 +467,19 @@ function Model(loopy){
 		// META.
 		Node._UID = UID;
 
+		// Loops (if they exist)
+		for(var i=0;i<loops.length;i++){
+			var loop = loops[i];
+			self.addLoop({
+				id: loop[0],
+				x: loop[1],
+				y: loop[2],
+				text: decodeURIComponent(loop[3]),
+				loopType: loop[4],
+				radius: loop[5]
+			});
+		}
+
 	};
 
 	self.clear = function(){
@@ -422,6 +492,11 @@ function Model(loopy){
 		// Just kill ALL labels.
 		while(self.labels.length>0){
 			self.labels[0].kill();
+		}
+
+		// Just kill ALL loops.
+		while(self.loops.length>0){
+			self.loops[0].kill();
 		}
 	};
 
@@ -459,6 +534,15 @@ function Model(loopy){
 		return null;
 	};
 
+	self.getLoopByPoint = function(x, y){
+		var result;
+		for(var i=self.loops.length-1; i>=0; i--){ // top-down
+			var loop = self.loops[i];
+			if(loop.isPointInLoop(x,y)) return loop;
+		}
+		return null;
+	};
+
 	// Click to edit!
 	subscribe("mouseclick",function(){
 
@@ -480,6 +564,13 @@ function Model(loopy){
 			return;
 		}
 
+		// Did you click on a loop? If so, edit THAT loop.
+		var clickedLoop = self.getLoopByPoint(Mouse.x, Mouse.y);
+		if(clickedLoop){
+			loopy.sidebar.edit(clickedLoop);
+			return;
+		}
+
 		// Did you click on an edge label? If so, edit THAT edge.
 		var clickedEdge = self.getEdgeByPoint(Mouse.x, Mouse.y);
 		if(clickedEdge){
@@ -493,6 +584,12 @@ function Model(loopy){
 			return;
 		}
 
+		// If the tool LOOP? If so, TRY TO CREATE LOOP.
+		if(self.loopy.tool==Loopy.TOOL_LOOP){
+			loopy.looper.tryMakingLoop();
+			return;
+		}
+
 		// Otherwise, go to main Edit page.
 		loopy.sidebar.showPage("Edit");
 
@@ -502,7 +599,7 @@ function Model(loopy){
 	self.getBounds = function(){
 
 		// If no nodes & no labels, forget it.
-		if(self.nodes.length==0 && self.labels.length==0) return;
+		if(self.nodes.length==0 && self.labels.length==0 && self.loops.length==0) return;
 
 		// Get bounds of ALL objects...
 		var left = Infinity;
@@ -522,6 +619,7 @@ function Model(loopy){
 		_testObjects(self.nodes);
 		_testObjects(self.edges);
 		_testObjects(self.labels);
+		_testObjects(self.loops);
 
 		// Return
 		return {
@@ -535,7 +633,7 @@ function Model(loopy){
 	self.center = function(andScale){
 
 		// If no nodes & no labels, forget it.
-		if(self.nodes.length==0 && self.labels.length==0) return;
+		if(self.nodes.length==0 && self.labels.length==0 && self.loops.length==0) return;
 
 		// Get bounds of ALL objects...
 		var bounds = self.getBounds();

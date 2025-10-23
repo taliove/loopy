@@ -184,6 +184,53 @@ function Sidebar(loopy){
 		self.addPage("Label", page);
 	})();
 
+	// Loop!
+	(function(){
+		var page = new SidebarPage();
+		page.addComponent(new ComponentButton({
+			header: true,
+			label: "返回顶部",
+			onclick: function(){
+				self.showPage("Edit");
+			}
+		}));
+		page.addComponent("text", new ComponentInput({
+			label: "<br><br>环路标识:",
+			//label: "Loop Identifier:",
+			textarea: false
+		}));
+		page.addComponent(new ComponentHTML({
+			html: "<br>(增强环路用 R1, R2...<br>调节环路用 B1, B2...)<br><br>"
+		}));
+		page.onshow = function(){
+			// Focus on the text field
+			page.getComponent("text").select();
+		};
+		page.onhide = function(){
+			
+			// If you'd just edited it...
+			var loop = page.target;
+			if(!page.target) return;
+
+			// If text is "" or all spaces, DELETE.
+			var text = loop.text;
+			if(/^\s*$/.test(text)){
+				// that was all whitespace, KILL.
+				page.target = null;
+				loop.kill();
+			}
+
+		};
+		page.addComponent(new ComponentButton({
+			label: "删除环路",
+			onclick: function(loop){
+				loop.kill();
+				self.showPage("Edit");
+			}
+		}));
+		self.addPage("Loop", page);
+	})();
+
 	// Edit
 	(function(){
 		var page = new SidebarPage();

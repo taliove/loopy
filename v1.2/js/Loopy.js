@@ -12,6 +12,7 @@ Loopy.TOOL_INK = 0;
 Loopy.TOOL_DRAG = 1;
 Loopy.TOOL_ERASE = 2;
 Loopy.TOOL_LABEL = 3;
+Loopy.TOOL_LOOP = 4;
 
 function Loopy(config){
 
@@ -50,6 +51,7 @@ function Loopy(config){
 	self.drag = new Dragger(self);
 	self.erase = new Eraser(self);
 	self.label = new Labeller(self);
+	self.looper = new Looper(self);
 
 	// Play Controls
 	self.playbar = new PlayControls(self);
