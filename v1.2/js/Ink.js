@@ -41,13 +41,53 @@ function Ink(loopy){
 		ctx.lineWidth = 5;
 		ctx.lineCap = "round";
 
+		// Convert world coordinates to screen coordinates for drawing
+		// We need to apply the reverse transformation that Mouse.js applies
+		var canvasses = document.getElementById("canvasses");
+		var s = 1/self.loopy.offsetScale;
+		var CW = canvasses.clientWidth - _PADDING - _PADDING;
+		var CH = canvasses.clientHeight - _PADDING_BOTTOM - _PADDING;
+
+		// Helper function to convert world coords to screen coords
+		var worldToScreen = function(wx, wy) {
+			var sx = wx;
+			var sy = wy;
+			
+			// Add offset back (reverse the subtraction in Mouse.js)
+			sx += self.loopy.offsetX;
+			sy += self.loopy.offsetY;
+			
+			// Reverse the centering transformation
+			sx -= (CW+_PADDING)/2;
+			sy -= (CH+_PADDING)/2;
+			
+			// Reverse the scale
+			sx = sx / s;
+			sy = sy / s;
+			
+			// Reverse the initial centering
+			sx += (CW+_PADDING)/2;
+			sy += (CH+_PADDING)/2;
+			
+			if(self.loopy.embedded){
+				sx += _PADDING/2;
+				sy += _PADDING/2;
+			}
+			
+			return [sx, sy];
+		};
+
+		// Convert points to screen coordinates
+		var lastPointScreen = worldToScreen(lastPoint[0], lastPoint[1]);
+		var currentPointScreen = worldToScreen(Mouse.x, Mouse.y);
+
 		// Draw line from last to current
 		ctx.beginPath();
-		ctx.moveTo(lastPoint[0]*2, lastPoint[1]*2);
-		ctx.lineTo(Mouse.x*2, Mouse.y*2);
+		ctx.moveTo(lastPointScreen[0]*2, lastPointScreen[1]*2);
+		ctx.lineTo(currentPointScreen[0]*2, currentPointScreen[1]*2);
 		ctx.stroke();
 
-		// Update last point
+		// Update last point (store world coordinates)
 		self.strokeData.push([Mouse.x,Mouse.y]);
 
 	};
